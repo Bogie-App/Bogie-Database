@@ -32,11 +32,13 @@ CREATE TABLE IF NOT EXISTS station_timing (
     line_id        INT  NOT NULL,
     arrival_time   TIME NOT NULL,
     departure_time TIME NOT NULL,
+    date           DATE NOT NULL,
+    direction      INT  NOT NULL,
     created_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (station_id) REFERENCES stations(id),
     FOREIGN KEY (line_id)    REFERENCES lines(id),
-    UNIQUE (station_id, line_id, arrival_time, departure_time)
+    UNIQUE (station_id, line_id, arrival_time, departure_time, date, direction)
 );
 
 -- Trigger pour mettre à jour updated_at automatiquement
