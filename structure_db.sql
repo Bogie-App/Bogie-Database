@@ -41,6 +41,22 @@ CREATE TABLE IF NOT EXISTS station_timing (
     UNIQUE (station_id, line_id, arrival_time, departure_time, date, direction)
 );
 
+-- Table de staging pour le chargement atomique des horaires
+-- Pas de FK ni de contrainte UNIQUE
+-- Vidée automatiquement après chaque swap réussi
+CREATE TABLE IF NOT EXISTS station_timing_staging (
+    station_id     INT  NOT NULL,
+    line_id        INT  NOT NULL,
+    arrival_time   TIME NOT NULL,
+    departure_time TIME NOT NULL,
+    date           DATE NOT NULL,
+    direction      INT  NOT NULL
+);
+
+-- Index pour accélérer les requêtes de lecture sur station_timing
+CREATE INDEX IF NOT EXISTS idx_timing_date         ON station_timing (date);
+CREATE INDEX IF NOT EXISTS idx_timing_station_date ON station_timing (station_id, date);
+
 -- Trigger pour mettre à jour updated_at automatiquement
 CREATE OR REPLACE FUNCTION update_updated_at()
 RETURNS TRIGGER AS $$
