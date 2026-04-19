@@ -53,6 +53,15 @@ CREATE TABLE IF NOT EXISTS station_timing_staging (
     direction      INT  NOT NULL
 );
 
+-- Table pour stocker les métadonnées de l'ETL comme le ETag GTFS
+CREATE TABLE IF NOT EXISTS etl_metadata (
+    id          SERIAL PRIMARY KEY,
+    key         VARCHAR(50) NOT NULL UNIQUE,
+    value       TEXT NOT NULL,
+    created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 -- Index pour accélérer les requêtes de lecture sur station_timing
 CREATE INDEX IF NOT EXISTS idx_timing_date         ON station_timing (date);
 CREATE INDEX IF NOT EXISTS idx_timing_station_date ON station_timing (station_id, date);
